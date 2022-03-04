@@ -1,17 +1,37 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+        <UploadImages :max="1"  @changed="handleImage"/>
+        <div class="canvas-container">
+          <canvas id="c"></canvas>
+        </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import UploadImages from 'vue-upload-drop-images'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    UploadImages
+  },
+  data () {
+    return {
+      image: ''
+    }
+  },
+  methods: {
+    handleImage (files) {
+      if (files[0]) {
+        const file = files[0]
+        const fr = new FileReader()
+        fr.onload = (event) => {
+          this.image = event.target.result
+          console.log(this.image)
+        } // onload fires after reading is complete
+        fr.readAsDataURL(file)
+      }
+    }
   }
 }
 </script>
@@ -25,4 +45,12 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.canvas-container{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>
