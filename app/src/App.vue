@@ -15,22 +15,31 @@ export default {
   components: {
     UploadImages
   },
-  data () {
-    return {
-      image: ''
-    }
-  },
   methods: {
     handleImage (files) {
       if (files[0]) {
         const file = files[0]
         const fr = new FileReader()
         fr.onload = (event) => {
-          this.image = event.target.result
-          console.log(this.image)
-        } // onload fires after reading is complete
+          this.setBase64ToCanvas(event.target.result)
+        }
         fr.readAsDataURL(file)
       }
+    },
+    setBase64ToCanvas (base64Image) {
+      const canvas = document.getElementById('c')
+      const ctx = canvas.getContext('2d')
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      const image = new Image()
+      image.onload = () => {
+        const canvasWidth = Math.trunc(700 - (100 * image.width / 700))
+        const canvasHeight = Math.trunc(700 - (100 * image.height / 700))
+        canvas.width = canvasWidth
+        canvas.height = canvasWidth
+        ctx.drawImage(image, 0, 0, canvasWidth, canvasHeight)
+        this.$nextTick(() => {})
+      }
+      image.src = base64Image
     }
   }
 }
