@@ -37,9 +37,17 @@ export default {
         canvas.width = canvasWidth
         canvas.height = canvasWidth
         ctx.drawImage(image, 0, 0, canvasWidth, canvasHeight)
+        this.setTextToImage(ctx)
         this.$nextTick(() => {})
       }
       image.src = base64Image
+    },
+    setTextToImage (ctx) {
+      ctx.lineWidth = 1
+      ctx.fillStyle = '#000'
+      ctx.lineStyle = '#000'
+      ctx.font = '40px sans-serif'
+      ctx.fillText('macho...', 100, 170)
     }
   }
 }
